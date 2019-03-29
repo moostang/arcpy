@@ -19,7 +19,7 @@ def createKP(gdb, fcCenterline, fcKP, sr):
     # USAGE
     # createKP('C:/GIS/Pipeline/pipeline.gdb','featurefile.shp','KP.shp',sr)
     # ------------------------------------------------------------------------ #
-    import arcpy
+    import numpy as np
     import math
 
 
@@ -52,9 +52,9 @@ def createKP(gdb, fcCenterline, fcKP, sr):
             except:
                 # print("Error at row" + str(dataLength+1) )
                 break
-        else:
-            # If CHAINAGE field is NOT a string
-            dataList.append((row[0],row[1],row[2]))
+    else:
+        # If CHAINAGE field is NOT a string
+        dataList.append((row[0],row[1],row[2]))
 
     del cursor, row
 
@@ -66,7 +66,7 @@ def createKP(gdb, fcCenterline, fcKP, sr):
         pt1Chainage = dataList[i-1][0]
         pt2Chainage = dataList[i  ][0]
         if pt2Chainage >= pt1Chainage:
-            tempList.append(dataList[i][0])
+            tempList.append(dataList[i])
         else:
             #print("Smaller values at row " + str(i))
             continue
