@@ -19,7 +19,7 @@ def createKP(gdb, fcCenterline, fcKP, sr):
     # USAGE
     # createKP('C:/GIS/Pipeline/pipeline.gdb','featurefile.shp','KP.shp',sr)
     # ------------------------------------------------------------------------ #
-    import numpy as np
+    import arcpy
     import math
 
 
