@@ -66,7 +66,7 @@ def createKP(gdb, fcCenterline, fcKP, sr):
         pt1Chainage = dataList[i-1][0]
         pt2Chainage = dataList[i  ][0]
         if pt2Chainage >= pt1Chainage:
-            tempList.append(dataList[i])
+            tempList.append(dataList[i][0])
         else:
             #print("Smaller values at row " + str(i))
             continue
