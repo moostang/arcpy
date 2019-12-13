@@ -22,6 +22,8 @@ def Create_START_END_From_XY_Points(InputDataset:str):
 
     import arcpy
 
+    fieldList = [m.name for m in arcpy.ListFields(InputDataset)]
+
     # Create start_x, start_y, end_x, and end_y for each point
     arcpy.management.AddField(InputDataset, 'START_X', "DOUBLE", 15, None, None, 'START_X', "NULLABLE", "NON_REQUIRED", None)
     arcpy.management.AddField(InputDataset, 'START_Y', "DOUBLE", 15, None, None, 'START_Y', "NULLABLE", "NON_REQUIRED", None)
@@ -33,11 +35,13 @@ def Create_START_END_From_XY_Points(InputDataset:str):
     yValues = []
     with arcpy.da.UpdateCursor(InputDataset, ['SHAPE@X', 'SHAPE@Y', 'START_X', 'START_Y']) as cursor:
         for row in cursor:
-            row[3] = row[0]
-            row[4] = row[1]
-            row[5] = row[2]
+            row[2] = row[0]
+            row[3] = row[1]
             xValues.append(row[0])
             yValues.append(row[1])
+
+            # Update the cursor with the updated list
+            cursor.updateRow(row)
     del cursor, row
 
     totalRows = int(arcpy.GetCount_management(InputDataset)[0])
@@ -62,11 +66,12 @@ def Create_START_END_From_XY_Points(InputDataset:str):
         arcpy.management.AddField(InputDataset, 'START_Z', "DOUBLE", 15, None, None, 'START_Z', "NULLABLE", "NON_REQUIRED", None)
         arcpy.management.AddField(InputDataset, 'END_Z', "DOUBLE", 15, None, None, 'END_Z', "NULLABLE", "NON_REQUIRED", None)
 
-        ZValues = []
+        zValues = []
         with arcpy.da.UpdateCursor(InputDataset, ['SHAPE@Z', 'START_Z']) as cursor:
             for row in cursor:
                 row[1] = row[0]
                 zValues.append(row[0])
+                cursor.updateRow(row)
         del cursor, row
 
         with arcpy.da.UpdateCursor(InputDataset, ['END_Z']) as cursor:
