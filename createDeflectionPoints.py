@@ -2,6 +2,12 @@ def createDeflectionPoints(targetWorkspace:str, InputDataset:str, fcNameDeflecti
     """
     Create a Point feature layer containing the deflection points.
     All units are in meters.
+
+    targetWorkspace, ArcGIS environment
+    InputDataset, Pathname of input polyline whose bend angles are required.
+    fcNameDeflectionPoints, Pathname of output deflection points feature layer
+    thresholdValue, Angle value to ignore
+    spatialReferenceObj, Ouput spatial reference object.
     """
 
     if arcpy.Exists(fcNameDeflectionPoints):
@@ -32,12 +38,14 @@ def createDeflectionPoints(targetWorkspace:str, InputDataset:str, fcNameDeflecti
     for row in deflection:
         cursor.insertRow(row)
     del cursor
-    
-    
+
 def calculateDeflection(InputDataset:str, thresholdValue:float):
     """
     Calculate bend angles and determine direction of bend.
     Input table has x (meters), y (meters), bearing (degrees)
+
+    InputDataset, Pathname of input polyline whose bend angles are required.
+    thresholdValue, Angle value to ignore
     """
     OutputDataset = []
     IndexBearing  = 3
